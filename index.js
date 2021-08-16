@@ -26,6 +26,9 @@ let isDrawing;
 let graphics;
 let path;
 let statusText;
+let timerText;
+let pathText;
+let timerEvent;
 const game = new Phaser.Game(config);
 
 function preload(){
@@ -68,18 +71,44 @@ function create() {
   };
 
   statusText = this.add.text(32, 32, 'pas commencé', infoStyle);
+  timerText = this.add.text(512, 32, '', infoStyle);
+  pathText = this.add.text(512, 64, '', infoStyle);
+
+  timerEvent = this.time.addEvent({ delay: 4000 });
+  timerEvent.paused = true;
 }
 
 function update() {
+  const timeUpdate = timerEvent.getRemainingSeconds();
+  const output = timeUpdate.toLocaleString(
+      'en-US',
+      {
+        minimumIntegerDigits: 1,
+        useGrouping: false
+      });
+  timerText.setText('Temps : ' + output);
+
   if(!this.input.activePointer.isDown && isDrawing) {
     isDrawing = false;
     statusText.setText('pas de dessin en cours');
+    timerEvent.paused = true;
   } else if(this.input.activePointer.isDown) {
     let x = this.input.activePointer.position.x - 2;
     let y = this.input.activePointer.position.y - 2;
     if(!isDrawing) {
+      if (path) {
+        path.destroy();
+        graphics.destroy();
+        graphics = this.add.graphics();
+        graphics.lineStyle(4, 0x00aa00);
+        graphics.depth = 3;
+        timerEvent.destroy();
+        timerEvent = this.time.addEvent({ delay: 4000 });
+      }
+
       path = new Phaser.Curves.Path(x, y);
       isDrawing = true;
+      timerEvent.paused = false;
       statusText.setText('nouveau');
     } else {
       path.lineTo(x, y);
@@ -90,6 +119,14 @@ function update() {
       }
     }
     path.draw(graphics);
+    const pathLength = path.getLength() ?? 0;
+    pathText.setText(
+        pathLength.toLocaleString(
+            'en-US',
+            {
+              minimumIntegerDigits: 2,
+              useGrouping: false
+            }));
   }
 }
 
