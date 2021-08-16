@@ -31,6 +31,7 @@ const game = new Phaser.Game(config);
 function preload(){
   this.load.image('test_image', 'assets/test.png');
   this.load.json('test_shape', 'assets/test.json');
+  this.load.image('background', 'assets/background.jpg');
 }
 
 function init() {
@@ -38,16 +39,35 @@ function init() {
 }
 
 function create() {
+
+  this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+  this.add
+      .image(0, 0, 'background')
+      .setOrigin(0, 0)
+      .setDisplaySize(
+        this.sys.game.config.width,
+        this.sys.game.config.height
+      );
+
   graphics = this.add.graphics();
   graphics.lineStyle(4, 0x00aa00);
+  graphics.depth = 2;
 
   this.matter.world.disableGravity();
   let shapes = this.cache.json.get('test_shape');
 
   test = this.matter.add.image(400, 360, 'test_image', null, { shape: shapes.test  });
-  test.depth = -1;
+  test.depth = 1;
 
-  statusText = this.add.text(32, 32, 'pas commencé');
+  const infoStyle = {
+    font: '20px Calibri',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
+  };
+
+  statusText = this.add.text(32, 32, 'pas commencé', infoStyle);
 }
 
 function update() {
