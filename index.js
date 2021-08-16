@@ -6,7 +6,7 @@ var config = {
   physics: {
     default: 'matter',
     matter: {
-      debug: false,
+      debug: true,
       gravity: {
         x: 0,
         y: 0
@@ -21,12 +21,16 @@ var config = {
   }
 }
 
+let test;
 let isDrawing;
 let graphics;
 let path;
 const game = new Phaser.Game(config);
 
-function preload(){}
+function preload(){
+  this.load.image('test_image', 'assets/test.png');
+  this.load.json('test_shape', 'assets/test.json');
+}
 
 function init() {
   isDrawing = false;
@@ -35,6 +39,12 @@ function init() {
 function create() {
   graphics = this.add.graphics();
   graphics.lineStyle(4, 0x00aa00);
+
+  this.matter.world.disableGravity();
+  let shapes = this.cache.json.get('test_shape');
+
+  test = this.matter.add.image(400, 360, 'test_image', null, { shape: shapes.test  });
+  test.depth = -1;
 }
 
 function update() {
