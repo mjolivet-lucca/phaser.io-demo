@@ -1,0 +1,23 @@
+# Visual Studio cache/options directory
+.vs/
+
+# Rider directory
+.idea/
+
+node_modules
+dist
+*.log*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+bin/
+Bin/
+obj/
+Obj/
