@@ -41,14 +41,12 @@ function update() {
   if(!this.input.activePointer.isDown && isDrawing) {
     isDrawing = false;
   } else if(this.input.activePointer.isDown) {
+    let x = this.input.activePointer.position.x - 2;
+    let y = this.input.activePointer.position.y - 2;
     if(!isDrawing) {
-      let x = this.input.activePointer.position.x - 2;
-      let y = this.input.activePointer.position.y - 2;
       path = new Phaser.Curves.Path(x, y);
       isDrawing = true;
     } else {
-      let x = this.input.activePointer.position.x - 2;
-      let y = this.input.activePointer.position.y - 2;
       path.lineTo(x, y);
     }
     path.draw(graphics);
