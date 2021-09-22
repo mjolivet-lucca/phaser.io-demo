@@ -133,6 +133,7 @@ function update() {
           this.tweens.add({
             targets: this.itemsTexts[i],
             alpha: 0,
+            scale: 10,
             duration: 1500,
             ease: 'Power2'
           });
